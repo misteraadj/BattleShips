@@ -1,14 +1,37 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: black;
+ background-color: black;
+
 }
 
 div#board {
 	position: relative;
+
+	width: 2048px;
+	height: 926px;
+
+	
+
+}
+
+
+table#you{
+	position: relative;
 	width: 1024px;
-	height: 925px;
-	margin: auto;
-	background-image: url(board.jpg);
+	height: 463px;
+	left: 0px;
+margin: auto;
+background: url("boardme.jpg") no-repeat center center;
+}
+
+table#other{
+	position: absolute;
+	width: 1024px;
+	height: 463px;
+	left: 1424px;
+	top: 95px;
+margin: auto;
+background: url("board.jpg") no-repeat center center;
 
 }
 
@@ -42,13 +65,14 @@ td{
 
 form{
 	position: absolute;
-	bottom: 0px;
+	bottom: 90px;
 	right: 0px;
 	padding:12px;
 	background-color: lightgreen;
 }
 
 form input{
+
 	background-color: #adebed ;
 	border-color: lightgreen;
 	font-size: 100%;
