@@ -2,17 +2,15 @@ main{
 	text-align: center;
 }
 
-main{
-	margin-top: 50%
+img.resize{
+	margin-top: 5%
 }
 
-
 body{
-	background-image: url("splashscreen battleships.jpg");
+	background-image: url("water.jpg");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	
 }
 
 header, main, footer{
