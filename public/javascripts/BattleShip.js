@@ -177,3 +177,107 @@ window.onload = function init() {
 };
 
 //window.onload = init;
+
+// Siraadj code. To be used..
+
+// var board1, board2;
+// var boards = [board1, board2];
+
+
+
+// //maak een bord en zet waardes standaard op false
+// board1 = board2 = new Array(8);
+// function fillBoard(board){
+// 	for(var i = 0; i < 7; i++){
+// 		board[i] = new Array(8);
+
+// 		for (var j = 0; j < 7; j++){
+// 			board[i][j] = false;
+// 		}
+// 	}
+// }
+
+// //doe fillboard voor beide boards
+// for( var i = 0; i < 2; i++){
+// 	fillBoard(boards[i]);
+// }
+
+
+// //object van player en computer. object van elke schip. 
+// //zet geplaatst op false en geef schepen een lengte.
+// var players = {
+//   "you":{
+//   	"numShips": 4,
+//   	"shipsSunk": 0,
+//     "ships":{
+//       "carrier":{
+//         "length": 5,
+//         "isPlaced": false,
+//         "name":"shipfive",
+//         "location": [0,0,0,0,0],
+//         "hits": ["","","","",""]
+//       },
+//       "battleship":{
+//         "length": 4,
+//         "isPlaced": false,
+//         "name":"shipfour"
+//         "location": [0,0,0,0],
+//         "hits": ["","","",""]
+//       },
+//       "submarine":{
+//         "length": 3,
+//         "isPlaced": false,
+//         "name":"shipthree"
+//         "location": [0,0,0],
+//         "hits": ["","",""]
+//       },
+//       "destroyer":{
+//         "length": 2,
+//         "isPlaced": false,
+//         "name":"shiptwo"
+//         "location": [0,0],
+//         "hits": ["",""]
+//       }
+//     }
+//   },
+//   "other":{
+//   	"numShips": 4,
+//   	"shipsSunk": 0,
+//     "ships":{
+//       "carrier":{
+//         "length": 5,
+//         "isPlaced": false,
+//         "name":"shipfive"
+//         "location": [0,0,0,0,0],
+//         "hits": ["","","","",""]
+//       },
+//       "battleship":{
+//         "length": 4,
+//         "isPlaced": false,
+//         "name":"shipfour"
+//         "location": [0,0,0,0],
+//         "hits": ["","","",""]
+//       },
+//       "submarine":{
+//         "length": 3,
+//         "isPlaced": false,
+//         "name":"shipthree"
+//         "location": [0,0,0],
+//         "hits": ["","",""]
+//       },
+//       "destroyer":{
+//         "length": 2,
+//         "isPlaced": false,
+//         "name":"shiptwo"
+//          "location": [0,0],
+//         "hits": ["",""]
+//       }
+//     }
+//   }
+// }
+
+
+// //moet nog geschreven worden
+// function placeShip(name, coordinates, canplace){
+
+// }
