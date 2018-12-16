@@ -100,6 +100,7 @@ var view = {
 
     displayHit: function (location) {
         var cell = document.getElementById(location);
+        alert("hit");
         cell.setAttribute("class", "hit");
     },
 
