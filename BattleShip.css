@@ -12,7 +12,7 @@ div#messageArea {
     position: absolute;
     top: 0px;
     left: 0px;
-    color: rgb(51, 204, 51);
+    color: rgb(52, 204, 51);
 }
 .hit {
     background: url("ship.png") no-repeat center center;
