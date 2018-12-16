@@ -53,8 +53,7 @@ table#second {
     height: 960px;
     left: 960px;
     top: 90px;
-    margin: auto;
-	background: url("../images/board.jpg") no-repeat center center ;
+    margin: 0px;
 }
 form {
     position: absolute;
