@@ -100,7 +100,6 @@ var view = {
 
     displayHit: function (location) {
         var cell = document.getElementById(location);
-        alert("hit");
         cell.setAttribute("class", "hit");
     },
 
@@ -110,64 +109,7 @@ var view = {
     }
 };
 
-var controller = {
-    guesses: 0,
-
-    processGuess: function (guess) {
-        var location = parseGuess(guess);
-        console.log("Sending message to server!")
-        socket.send("Selected location is: " + location);
-        if (location) {
-            this.guesses++;
-            var hit = model.fire(location);
-            if (hit && model.shipsSunk === model.numShips) {
-                view.displayMessage("You sank all the battleships in " + this.guesses + " guesses!")
-            }
-        }
-    }
-};
-
-function parseGuess(guess) {
-    var alphabet = ["A", "B", "C", "D", "E", "F", "G"];
-
-    if (guess === null || guess.length !== 2) {
-        alert("Please enter a valid guess. Must be a letter and number");
-    } else {
-        var firstChar = guess.charAt(0);
-        var row = alphabet.indexOf(firstChar);
-        var column = guess.charAt(1);
-
-        if (isNaN(row) || isNaN(column)) {
-            alert("Not a valid input");
-        } else if (row < 0 || row >= model.boardSize || column < 0 || column >= model.boardSize) {
-            alert("Input is not located on this board");
-        } else {
-            return row + column;
-        }
-    }
-    return null;
-};
-
-function handleFireButton() {
-    var guessInput = document.getElementById("guessInput");
-    var guess = guessInput.value.toUpperCase();
-
-    controller.processGuess(guess);
-
-    guessInput.value = "";
-};
-
-function handleKeyPress(e) {
-    var fireButton = document.getElementById("fireButton");
-
-    e = e || window.event;
-
-    if (e.keyCode === 13) {
-        fireButton.click();
-        return false;
-    }
-};
-
+var guesses =  0
 // Set onclick function for each table cell
 var table = document.getElementById("first");
 if (table != null) {
@@ -182,13 +124,11 @@ if (table != null) {
 function handleCellClick(tableCell) {
     var location = tableCell.id
     if (location) {
-        this.guesses++;
+        guesses++;
         var hit = model.fire(location);
         if (hit && model.shipsSunk === model.numShips) {
             // view.displayMessage("You sank all the battleships in " + this.guesses + " guesses!")
             alert("You sank all the battleships in " + this.guesses + " guesses!")
-
-
         }
     }
 }
@@ -196,16 +136,8 @@ function handleCellClick(tableCell) {
 
 
 window.onload = function init() {
-    var fireButton = document.getElementById("fireButton");
-    fireButton.onclick = handleFireButton;
-
-    var guessInput = document.getElementById("guessInput");
-    guessInput.onkeypress = handleKeyPress;
-
     model.generateShipLocations();
 };
-
-//window.onload = init;
 
 // Siraadj code. To be used..
 
