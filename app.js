@@ -2,6 +2,7 @@
 var express = require("express");
 var http = require("http");
 var path = require("path");
+var websocket = require("ws");
 
 var port = process.argv[2];
 var app = express();
@@ -12,4 +13,16 @@ app.get("/play", indexRouter);
 
 app.use(express.static(__dirname + "/public"));
 
-http.createServer(app).listen(port);
+var server = http.createServer(app);
+
+// console.log("Server is created!!");
+const wss = new websocket.Server({ server });
+console.log("Websocket is created!!");
+
+wss.on("connection", function(ws) {
+  ws.on("message", function incoming(message) {
+    console.log("[LOG] " + message);
+  });
+});
+
+server.listen(port)
