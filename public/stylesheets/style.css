@@ -1,11 +1,23 @@
 body {
     background-color: black;
 }
-div#board{
+div#board1{
 	position: relative;
-	width: 1024px;
-	height: 925px;
+	width: 960px;
+    height: 960px;
+    top: 100px;
+    left: 0px;
+    background: url("../images/board.jpg") no-repeat center center;
 
+}
+
+div#board2{
+    position: relative;
+	width: 960px;
+    height: 960px;
+    left: 960px;
+    bottom: 860px;
+    background: url("../images/board.jpg") no-repeat center center;
 }
 
 div#messageArea {
@@ -21,23 +33,24 @@ div#messageArea {
     background: url("../images/miss.png") no-repeat center center;
 }
 table#first {
-    position: absolute;
-    width: 960px;
-    height: 1080px;
-    left: 0px;
-    top: 90px;
-    margin: auto;
-	background: url("../images/board.jpg") no-repeat center center;
+    position: relative;
+    width: 670px;
+    height: 640px;
+    left: 144px;
+    top: 135px;
+    margin: 0px;
+
+
 }
 td {
-    width: 80px;
-    height: 80px;
+    width: 96px;
+    height: 96px;
 }
 
 table#second {
     position: absolute;
     width: 960px;
-    height: 1080px;
+    height: 960px;
     left: 960px;
     top: 90px;
     margin: auto;
@@ -45,8 +58,8 @@ table#second {
 }
 form {
     position: absolute;
-    bottom: 650px;
-    left: 800px;
+    top: 0px;
+    left: 0px;
     padding: 15px;
     background-color: rgb(51, 204, 51);
 }
