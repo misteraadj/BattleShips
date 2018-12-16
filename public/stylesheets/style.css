@@ -15,10 +15,10 @@ div#messageArea {
     color: rgb(52, 204, 51);
 }
 .hit {
-    background: url("ship.png") no-repeat center center;
+    background: url("../images/ship.png") no-repeat center center;
 }
 .miss {
-    background: url("miss.png") no-repeat center center;
+    background: url("../images/miss.png") no-repeat center center;
 }
 table#first {
     position: absolute;
@@ -27,11 +27,11 @@ table#first {
     left: 0px;
     top: 90px;
     margin: auto;
-	background: url("board.jpg") no-repeat center center;
+	background: url("../images/board.jpg") no-repeat center center;
 }
 td {
-    width: 94px;
-    height: 94px;
+    width: 80px;
+    height: 80px;
 }
 
 table#second {
@@ -41,7 +41,7 @@ table#second {
     left: 960px;
     top: 90px;
     margin: auto;
-	background: url("board.jpg") no-repeat center center ;
+	background: url("../images/board.jpg") no-repeat center center ;
 }
 form {
     position: absolute;
