@@ -4,6 +4,7 @@ var http = require("http");
 var path = require("path");
 var websocket = require("ws");
 
+var gameStatus = require("./statTracker");
 var port = process.argv[2];
 var app = express();
 
@@ -19,10 +20,22 @@ var server = http.createServer(app);
 const wss = new websocket.Server({ server });
 console.log("Websocket is created!!");
 
-wss.on("connection", function(ws) {
+var connectionID = 0;//each websocket receives a unique ID
+wss.on("connection", function (ws) {
+  /*
+   * two-player game: every two players are added to the same game
+  //  */
+  let con = ws;
+  con.id = connectionID++;
+  // let playerType = currentGame.addPlayer(con);
+  // websockets[con.id] = currentGame;
+
+  console.log("Player %s placed in game", con.id);
+
   ws.on("message", function incoming(message) {
     console.log("[LOG] " + message);
   });
 });
+
 
 server.listen(port)
