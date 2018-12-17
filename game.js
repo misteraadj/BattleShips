@@ -4,7 +4,8 @@ var game = function (gameID) {
     this.playerA = null;
     this.playerB = null;
     this.id = gameID;
-    this.wordToGuess = null; //first player to join the game, can set the word
+    this.shipLocationsPlayerA = null; //first player to join the game, can set the word
+    this.shipLocationsPlayerB = null; //first player to join the game, can set the word
     this.gameState = "0 JOINT"; //"A" means A won, "B" means B won, "ABORTED" means the game was aborted
 };
 
@@ -15,7 +16,7 @@ game.prototype.transitionStates = {};
 game.prototype.transitionStates["0 JOINT"] = 0;
 game.prototype.transitionStates["1 JOINT"] = 1;
 game.prototype.transitionStates["2 JOINT"] = 2;
-game.prototype.transitionStates["CHAR GUESSED"] = 3;
+game.prototype.transitionStates["LOCATION GUESSED"] = 3;
 game.prototype.transitionStates["A"] = 4; //A won
 game.prototype.transitionStates["B"] = 5; //B won
 game.prototype.transitionStates["ABORTED"] = 6;
@@ -29,7 +30,7 @@ game.prototype.transitionMatrix = [
     [0, 1, 0, 0, 0, 0, 0],   //0 JOINT
     [1, 0, 1, 0, 0, 0, 0],   //1 JOINT
     [0, 0, 0, 1, 0, 0, 1],   //2 JOINT (note: once we have two players, there is no way back!)
-    [0, 0, 0, 1, 1, 1, 1],   //CHAR GUESSED
+    [0, 0, 0, 1, 1, 1, 1],   //LOCATION GUESSED
     [0, 0, 0, 0, 0, 0, 0],   //A WON
     [0, 0, 0, 0, 0, 0, 0],   //B WON
     [0, 0, 0, 0, 0, 0, 0]    //ABORTED
@@ -65,32 +66,48 @@ game.prototype.isValidState = function (s) {
     return (s in game.prototype.transitionStates);
 };
 
-game.prototype.setStatus = function (w) {
+game.prototype.setStatus = function (newState) {
 
-    console.assert(typeof w == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof w);
+    console.assert(typeof newState == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof newState);
 
-    if (game.prototype.isValidState(w) && game.prototype.isValidTransition(this.gameState, w)) {
-        this.gameState = w;
+    if (game.prototype.isValidState(newState) && game.prototype.isValidTransition(this.gameState, newState)) {
+        this.gameState = newState;
         console.log("[STATUS] %s", this.gameState);
     }
     else {
-        return new Error("Impossible status change from %s to %s", this.gameState, w);
+        return new Error("Impossible status change from %s to %s", this.gameState, newState);
     }
 };
 
-game.prototype.setWord = function (w) {
+game.prototype.setPlayerAShips = function (locations) {
 
-    console.assert(typeof w == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof w);
+    console.assert(typeof locations == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof locations);
 
     //two possible options for the current game state:
     //1 JOINT, 2 JOINT
     if (this.gameState != "1 JOINT" && this.gameState != "2 JOINT") {
         return new Error("Trying to set word, but game status is %s", this.gameState);
     }
-    this.wordToGuess = w;
+    this.wordToGuess = locations;
 };
 
-game.prototype.getWord = function(){
+game.prototype.setPlayerBShips = function (locations) {
+
+    console.assert(typeof locations == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof locations);
+
+    //two possible options for the current game state:
+    //1 JOINT, 2 JOINT
+    if (this.gameState != "1 JOINT" && this.gameState != "2 JOINT") {
+        return new Error("Trying to set word, but game status is %s", this.gameState);
+    }
+    this.shipLocationsPlayerB = locations;
+};
+
+game.prototype.getLocationsA = function(){
+    return this.wordToGuess;
+};
+
+game.prototype.getLocationsB = function(){
     return this.wordToGuess;
 };
 
@@ -98,9 +115,9 @@ game.prototype.hasTwoConnectedPlayers = function () {
     return (this.gameState == "2 JOINT");
 };
 
-game.prototype.addPlayer = function (p) {
+game.prototype.addPlayer = function (newPlayer) {
 
-    console.assert(p instanceof Object, "%s: Expecting an object (WebSocket), got a %s", arguments.callee.name, typeof p);
+    console.assert(newPlayer instanceof Object, "%s: Expecting an object (WebSocket), got a %s", arguments.callee.name, typeof newPlayer);
 
     if (this.gameState != "0 JOINT" && this.gameState != "1 JOINT") {
         return new Error("Invalid call to addPlayer, current state is %s", this.gameState);
@@ -115,11 +132,11 @@ game.prototype.addPlayer = function (p) {
     }
 
     if (this.playerA == null) {
-        this.playerA = p;
+        this.playerA = newPlayer;
         return "A";
     }
     else {
-        this.playerB = p;
+        this.playerB = newPlayer;
         return "B";
     }
 };
