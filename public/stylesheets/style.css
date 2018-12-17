@@ -20,20 +20,13 @@ div#board2{
     background: url("../images/boardme.jpg") no-repeat center center;
 }
 
-#messageArea {
-    position: absolute;
-    z-index: 101;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #fde073;
+#MessageArea {
     text-align: center;
-    line-height: 2.5;
-    overflow: hidden; 
-    -webkit-box-shadow: 0 0 5px pink;
-    -moz-box-shadow:    0 0 5px rgb(219, 212, 212);
-    box-shadow:         0 0 5px rgb(233, 227, 227);
+    color: #4CAF50;
+    text-transform: uppercase;
+    left: 50%;
 }
+
 .hit {
     background: url("../images/ship.png") no-repeat center center;
 }

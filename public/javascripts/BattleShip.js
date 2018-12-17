@@ -59,7 +59,7 @@ var model = {
         // }
 
         for (var i = 0; i < this.numShips; i++) {
-            view.displayMessage("Click on your board to select the location of " + this.ships[i]._iname + "ship")
+            view.displayMessage("Click on your board to select the location of " + this.ships[i]._iname + " ship")
             do {
                 locations = this.generateShip();
             } while (this.collision(locations));
