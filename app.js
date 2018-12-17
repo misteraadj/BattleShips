@@ -57,11 +57,11 @@ wss.on("connection", function (ws) {
   con.send((playerType == "A") ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
 
-  if(playerType == "B" && currentGame.getWord()!=null){
-    let msg = messages.;
-    msg.data = currentGame.getWord();
-    con.send(JSON.stringify(msg));
-}
+//   if(playerType == "B" && currentGame.getWord()!=null){
+//     let msg = messages.;
+//     msg.data = currentGame.getWord();
+//     con.send(JSON.stringify(msg));
+// }
   /*
   #############################################
   ########### Receiving Messages ##############

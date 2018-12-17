@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title> BattleShip </title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/splashstyle.css">
+	</head>
+	<body>
+
+		<div class= "bg">
+
+			<div class = "logo">
+			</div>
+
+
+			<form action="/play" method="get">
+				
+					<button class = button1 type="submit">Start a game!</button>
+				
+			</form>
+
+			<form action="/play" method="get">
+				
+					<button class = button2 type="submit">How to play?</button>
+				
+			</form>
+			<form action="/play" method="get">
+				
+                <button class = button2 type="submit">How to play?</button>
+            
+        </form>
+
+		<h1><%= gamesInitialized %> 
+			<%if (gamesInitialized != 1) { %>
+				games
+			<% } else { %>
+				game
+			<% } %>
+			initialized, 
+			<%= gamesCompleted %> 
+			completed
+		</h1>
+		</div>
+
+	
+			
+
+	
+
+		
+		
+
+	</body>
+
+</html>
