@@ -104,11 +104,11 @@ game.prototype.setPlayerBShips = function (locations) {
 };
 
 game.prototype.getLocationsA = function(){
-    return this.wordToGuess;
+    return this.shipLocationsPlayerA;
 };
 
 game.prototype.getLocationsB = function(){
-    return this.wordToGuess;
+    return this.shipLocationsPlayerB;
 };
 
 game.prototype.hasTwoConnectedPlayers = function () {

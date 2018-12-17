@@ -1,24 +1,31 @@
 var socket = new WebSocket("ws://localhost:3000");
 
-var model = {
+data = {
     boardSize: 7,
     numShips: 3,
     shipLength: 3,
     shipsSunk: 0,
-
-    ships: [
+    playerName: '',
+    playerShips: [
         { id: 01, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'first'},
         { id: 02, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'second'},
         { id: 03, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'third'}
-    ],
+    ], 
+    opponentShips: [
+        { id: 01, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'first'},
+        { id: 02, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'second'},
+        { id: 03, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'third'}
+    ]
+};
 
+var model = {
     fire: function (guess) {
-        for (var i = 0; i < this.numShips; i++) {
-            var ship = this.ships[i];
+        for (var i = 0; i < data.numShips; i++) {
+            var ship = data.opponentShips[i];
             var index = ship.locations.indexOf(guess);
 
             if (ship.hits[index] === "hit") {
-                view.displayMessage("You have already hit this location!");
+                view.z("You have already hit this location!");
                 return true;
             } else if (index >= 0) {
                 ship.hits[index] = "hit";
@@ -27,7 +34,7 @@ var model = {
 
                 if (this.isSunk(ship)) {
                     view.displayMessage("You sunk my battleship!");
-                    this.shipsSunk++;
+                    data.shipsSunk++;
                 }
                 return true;
             }
@@ -38,7 +45,7 @@ var model = {
     },
 
     isSunk: function (ship) {
-        for (var i = 0; i < this.shipLength; i++) {
+        for (var i = 0; i < data.shipLength; i++) {
             if (ship.hits[i] !== "hit") {
                 return false;
             }
@@ -46,24 +53,13 @@ var model = {
         return true;
     },
 
-    generateShipLocations: function () {
+    generateShipLocations: function (currentPlayerShips) {
         var locations;
-
-        // if (table != null) {
-        //     for (var i = 0; i < table.rows.length; i++) {
-        //         for (var j = 0; j < table.rows[i].cells.length; j++)
-        //             table.rows[i].cells[j].onclick = function () {
-        //                 return this.id
-        //             };
-        //     }
-        // }
-
-        for (var i = 0; i < this.numShips; i++) {
-            view.displayMessage("Click on your board to select the location of " + this.ships[i]._iname + " ship")
+        for (var i = 0; i < data.numShips; i++) {
             do {
                 locations = this.generateShip();
             } while (this.collision(locations));
-            this.ships[i].locations = locations;
+            currentPlayerShips[i].locations = locations;
         }
     },
 
@@ -72,15 +68,15 @@ var model = {
         var row, col;
 
         if (direction === 1) {
-            row = Math.floor(Math.random() * this.boardSize);
-            col = Math.floor(Math.random() * (this.boardSize - this.shipLength + 1));
+            row = Math.floor(Math.random() * data.boardSize);
+            col = Math.floor(Math.random() * (data.boardSize - data.shipLength + 1));
         } else {
-            col = Math.floor(Math.random() * this.boardSize);
-            row = Math.floor(Math.random() * (this.boardSize - this.shipLength + 1));
+            col = Math.floor(Math.random() * data.boardSize);
+            row = Math.floor(Math.random() * (data.boardSize - data.shipLength + 1));
         }
 
         var newShipLocations = [];
-        for (var i = 0; i < this.shipLength; i++) {
+        for (var i = 0; i < data.shipLength; i++) {
             if (direction === 1) {
                 newShipLocations.push(row + "" + (col + i));
             } else {
@@ -91,8 +87,8 @@ var model = {
     },
 
     collision: function (locations) {
-        for (var i = 0; i < this.numShips; i++) {
-            var ship = this.ships[i];
+        for (var i = 0; i < data.numShips; i++) {
+            var ship = data.playerShips[i];
             for (var j = 0; j < locations.length; j++) {
                 if (ship.locations.indexOf(locations[j]) >= 0) {
                     return true;
@@ -100,29 +96,47 @@ var model = {
             }
         }
         return false;
-    }
+    }, 
+
+    showPlayerShips: function() {
+        for (var i = 0; i < data.numShips; i++) {
+            locs = data.playerShips[i].locations;
+            for (var j=0; j < locs.length; j++) {
+               view.displayOwnShip(locs[j]); 
+            }
+        }
+    } 
 };
 
 var view = {
     displayMessage: function (msg) {
         var messageArea = document.getElementById("MessageArea");
-        messageArea.innerHTML = msg;
+        messageArea.innerHTML = data.playerName + ": " + msg;
+    },
+
+    displayOwnShip: function (location) {
+        var cell = document.getElementById(location);
+        cell.setAttribute("class", "showShip");
     },
 
     displayHit: function (location) {
-        var cell = document.getElementById(location);
+        iloc = location.toString()
+        var cell = document.getElementById('second').rows[iloc[0]].cells[iloc[1]]
         cell.setAttribute("class", "hit");
     },
 
     displayMiss: function (location) {
-        var cell = document.getElementById(location);
+        iloc = location.toString()
+        var cell = document.getElementById('second').rows[iloc[0]].cells[iloc[1]]
         cell.setAttribute("class", "miss");
     }
+
+
 };
 
 var guesses = 0
 // Set onclick function for each table cell
-var table = document.getElementById("first");
+var table = document.getElementById("second");
 if (table != null) {
     for (var i = 0; i < table.rows.length; i++) {
         for (var j = 0; j < table.rows[i].cells.length; j++)
@@ -137,7 +151,7 @@ function handleCellClick(tableCell) {
     if (location) {
         guesses++;
         var hit = model.fire(location);
-        if (hit && model.shipsSunk === model.numShips) {
+        if (hit && data.shipsSunk === data.numShips) {
             // view.displayMessage("You sank all the battleships in " + this.guesses + " guesses!")
             alert("You sank all the battleships in " + this.guesses + " guesses!")
         }
@@ -147,109 +161,16 @@ function handleCellClick(tableCell) {
 
 
 window.onload = function init() {
-    model.generateShipLocations();
+    model.generateShipLocations(data.playerShips);
+    model.showPlayerShips();
+    model.generateShipLocations(data.opponentShips);
 };
 
-// Siraadj code. To be used..
-
-// var board1, board2;
-// var boards = [board1, board2];
-
-
-
-// //maak een bord en zet waardes standaard op false
-// board1 = board2 = new Array(8);
-// function fillBoard(board){
-// 	for(var i = 0; i < 7; i++){
-// 		board[i] = new Array(8);
-
-// 		for (var j = 0; j < 7; j++){
-// 			board[i][j] = false;
-// 		}
-// 	}
-// }
-
-// //doe fillboard voor beide boards
-// for( var i = 0; i < 2; i++){
-// 	fillBoard(boards[i]);
-// }
-
-
-// //object van player en computer. object van elke schip. 
-// //zet geplaatst op false en geef schepen een lengte.
-// var players = {
-//   "you":{
-//   	"numShips": 4,
-//   	"shipsSunk": 0,
-//     "ships":{
-//       "carrier":{
-//         "length": 5,
-//         "isPlaced": false,
-//         "name":"shipfive",
-//         "location": [0,0,0,0,0],
-//         "hits": ["","","","",""]
-//       },
-//       "battleship":{
-//         "length": 4,
-//         "isPlaced": false,
-//         "name":"shipfour"
-//         "location": [0,0,0,0],
-//         "hits": ["","","",""]
-//       },
-//       "submarine":{
-//         "length": 3,
-//         "isPlaced": false,
-//         "name":"shipthree"
-//         "location": [0,0,0],
-//         "hits": ["","",""]
-//       },
-//       "destroyer":{
-//         "length": 2,
-//         "isPlaced": false,
-//         "name":"shiptwo"
-//         "location": [0,0],
-//         "hits": ["",""]
-//       }
-//     }
-//   },
-//   "other":{
-//   	"numShips": 4,
-//   	"shipsSunk": 0,
-//     "ships":{
-//       "carrier":{
-//         "length": 5,
-//         "isPlaced": false,
-//         "name":"shipfive"
-//         "location": [0,0,0,0,0],
-//         "hits": ["","","","",""]
-//       },
-//       "battleship":{
-//         "length": 4,
-//         "isPlaced": false,
-//         "name":"shipfour"
-//         "location": [0,0,0,0],
-//         "hits": ["","","",""]
-//       },
-//       "submarine":{
-//         "length": 3,
-//         "isPlaced": false,
-//         "name":"shipthree"
-//         "location": [0,0,0],
-//         "hits": ["","",""]
-//       },
-//       "destroyer":{
-//         "length": 2,
-//         "isPlaced": false,
-//         "name":"shiptwo"
-//          "location": [0,0],
-//         "hits": ["",""]
-//       }
-//     }
-//   }
-// }
-
-
-// //moet nog geschreven worden
-// function placeShip(name, coordinates, canplace){
-
-// }
+// Handle incoming messages
+socket.onmessage = function(event){
+    msg = JSON.parse(event.data);
+    if (msg.type === 'PLAYER-TYPE') {
+        data.playerName = "Player " + msg.data
+    }
+    // console.log("Received message: " + event.data);
+}
