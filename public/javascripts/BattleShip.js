@@ -7,9 +7,9 @@ var model = {
     shipsSunk: 0,
 
     ships: [
-        { locations: [0, 0, 0], hits: ["", "", ""] },
-        { locations: [0, 0, 0], hits: ["", "", ""] },
-        { locations: [0, 0, 0], hits: ["", "", ""] }
+        { id: 01, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'first'},
+        { id: 02, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'second'},
+        { id: 03, locations: [0, 0, 0], hits: ["", "", ""], _iname: 'third'}
     ],
 
     fire: function (guess) {
@@ -48,7 +48,18 @@ var model = {
 
     generateShipLocations: function () {
         var locations;
+
+        // if (table != null) {
+        //     for (var i = 0; i < table.rows.length; i++) {
+        //         for (var j = 0; j < table.rows[i].cells.length; j++)
+        //             table.rows[i].cells[j].onclick = function () {
+        //                 return this.id
+        //             };
+        //     }
+        // }
+
         for (var i = 0; i < this.numShips; i++) {
+            view.displayMessage("Click on your board to select the location of " + this.ships[i]._iname + "ship")
             do {
                 locations = this.generateShip();
             } while (this.collision(locations));
@@ -109,7 +120,7 @@ var view = {
     }
 };
 
-var guesses =  0
+var guesses = 0
 // Set onclick function for each table cell
 var table = document.getElementById("first");
 if (table != null) {
